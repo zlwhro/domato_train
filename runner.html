@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+<h1>running</h1>
+<script>
+
+function sleep(msec) {
+  return new Promise(resolve => setTimeout(resolve, msec));
+}
+async function example() {
+  console.log('Start');
+  await sleep(2000); // Sleep for 2 seconds
+  console.log('End');
+}
+function generateRandomString(length = 16) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
+async function fuzz() {
+    const params = new URLSearchParams(window.location.search);
+    const value = params.get('count');
+    if(value && Number(value))
+    {
+        outfile = generateRandomString()+".html"
+        fuzz = window.open(`/generate?outfile=${outfile}`)
+        for(i=1; i<value; ++i){
+            await sleep(10)
+            outfile = generateRandomString()+".html"
+            fuzz.location = `/generate?outfile=${outfile}`;
+        }
+    }
+}
+fuzz()
+</script>
+</body>
+
+</html>
+
